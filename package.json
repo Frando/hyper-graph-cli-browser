@@ -1,0 +1,24 @@
+{
+  "name": "hypergraph-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "hyper-graph-db": "^0.3.4",
+    "hyperdb": "^3.1.2",
+    "minimist": "^1.2.0",
+    "neat-log": "^2.4.0",
+    "perf_hooks": "0.0.1",
+    "txt-blit": "^1.0.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1",
+    "tape": "^4.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

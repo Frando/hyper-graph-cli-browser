@@ -1,0 +1,10 @@
+node_modules
+sandbox
+db
+*.db
+*.log
+NOTES.txt
+.idea
+_old
+.vscode
+err
