@@ -1,4 +1,4 @@
-# hyper-graph-cli
+# hyper-graph-cli-browser
 
 A small command-line explorer for [hyper-graph databases](https://github.com/e-e-e/hyper-graph-db).
 
@@ -18,7 +18,7 @@ or
 ## Usage
 
 ```
-hyper-readings-cli browse path/to/db --predidate rdf:type --object hr:root
+$ hg-browser browse path/to/db --predidate rdf:type --object hr:root
 ```
 
 Opens the hypergraph database at that pass. Specify a root (intro) query with one, two or three options out of `--subject`, `--predicate`, `--object`.
@@ -26,7 +26,7 @@ Opens the hypergraph database at that pass. Specify a root (intro) query with on
 or, to directly browse hyper-reader databases
 
 ```
-hyper-readings-cli hyperreadings
+hg-browser hyperreadings
 ```
 
 

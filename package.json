@@ -1,5 +1,5 @@
 {
-  "name": "hyper-graph-cli",
+  "name": "hyper-graph-cli-browser",
   "version": "0.0.1",
   "description": "CLI browser for hyper-graph-db",
   "main": "index.js",
@@ -18,6 +18,9 @@
   "devDependencies": {
     "standard": "^11.0.1",
     "tape": "^4.9.1"
+  },
+  "bin": {
+    "hg-browser": "cli.js"
   },
   "scripts": {
     "start": "node cli.js",
