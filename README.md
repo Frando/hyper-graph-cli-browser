@@ -8,11 +8,11 @@ Has a built-in preset to load databases created with [hyper-readings](https://gi
 
 ## Installation 
 
-    npm install -g hyper-graph-cli
+    npm install -g hyper-graph-cli-browser
 
 or
 
-    git clone https://github.com/Frando/hyper-graph-cli
+    git clone https://github.com/Frando/hyper-graph-cli-browser
     npm install
 
 ## Usage
@@ -29,5 +29,4 @@ or, to directly browse hyper-reader databases
 hg-browser hyperreadings
 ```
 
-
-
+If running from the cloned repositors, replace `hg-browser` by `node cli.js`.
