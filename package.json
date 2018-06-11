@@ -1,7 +1,7 @@
 {
   "name": "hyper-graph-cli",
   "version": "0.0.1",
-  "description": "",
+  "description": "CLI browser for hyper-graph-db",
   "main": "index.js",
   "repository": {
     "type": "git",

@@ -52,7 +52,7 @@ TripleTree.prototype.up = function () {
   var found = false
   if (this.cur._root) {
     idx = this.tree.findIndex((n) => same(n, this.cur))
-    if (idx > 0) found = this.tree[idx]
+    if (idx > 0) found = this.tree[idx - 1]
   }
   if (!found && !this.cur.parent) return
   if (!found) {
