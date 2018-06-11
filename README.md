@@ -29,4 +29,4 @@ or, to directly browse hyper-reader databases
 hg-browser hyperreadings
 ```
 
-If running from the cloned repositors, replace `hg-browser` by `node cli.js`.
+If running from the cloned repository, replace `hg-browser` by `node cli.js`.
