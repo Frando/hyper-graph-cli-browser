@@ -81,8 +81,7 @@ TripleTree.prototype.down = function () {
         if (check(node.parent.children[i])) return node.parent.children[i]
       }
       return next(tree, node.parent)
-    }
-    else if (node._root) {
+    } else if (node._root) {
       idx = tree.findIndex((n) => same(n, node))
       if (tree[idx + 1]) return tree[idx + 1]
     }
@@ -101,7 +100,6 @@ TripleTree.prototype.enter = function () {
   function cb () {
     self.cur.children.forEach((obj) => self.loadChildren(obj))
   }
-
 }
 
 TripleTree.prototype.render = function () {
@@ -117,7 +115,6 @@ TripleTree.prototype.render = function () {
       if (tree[idx].children && tree[idx]._open) walk(tree[idx].children, cur, level + 1)
     }
   }
-
 }
 
 TripleTree.prototype.formatLine = function (node, opts) {
@@ -163,10 +160,6 @@ function spo (s, p, o) {
     predicate: p,
     object: o
   }
-}
-
-function pos (p, o, s) {
-  return spo(s, p, o)
 }
 
 function same (n1, n2) {

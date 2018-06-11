@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var hypergraphCli = require('./index.js')
 var minimist = require('minimist')
 var fs = require('fs')

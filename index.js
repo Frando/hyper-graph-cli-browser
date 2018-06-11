@@ -4,7 +4,7 @@ var blit = require('txt-blit')
 var hg = require('hyper-graph-db')
 var C = require('./src/cli-utils.js')
 var Tree = require('./src/tree.js')
-var path = require('path');
+var path = require('path')
 
 function HrDebug (dbs, query) {
   if (!Array.isArray(dbs)) return HrDebug([dbs], query)
@@ -130,7 +130,6 @@ function HrDebug (dbs, query) {
     self.state.log.push(line)
     self.bus.emit('render')
   }
-
 }
 
 module.exports = HrDebug

@@ -1,10 +1,10 @@
 var chalk = require('chalk')
 
 module.exports = {
-    Box,
-    formatLines,
-    strlenAnsi,
-    sliceAnsi
+  Box,
+  formatLines,
+  strlenAnsi,
+  sliceAnsi
 }
 
 function Box (bus, input) {
@@ -13,18 +13,18 @@ function Box (bus, input) {
   this.scrollback = 0
 
   if (input) {
-    input.on('down', () => { if (this.active) this.scroll(1) } )
-    input.on('up', () => { if (this.active) this.scroll(-1) } )
+    input.on('down', () => { if (this.active) this.scroll(1) })
+    input.on('up', () => { if (this.active) this.scroll(-1) })
   }
 }
 
-Box.prototype.scroll = function(idx) {
+Box.prototype.scroll = function (idx) {
   this.scrollback = this.scrollback + idx
   if (this.scrollback < 0) this.scrollback = 0
   this.bus.emit('render')
 }
 
-Box.prototype.select = function(idx) {
+Box.prototype.select = function (idx) {
   this.scrollback = this.scrollback + idx
   if (this.scrollback < 0) this.scrollback = 0
   this.bus.emit('render')
@@ -42,21 +42,19 @@ Box.prototype.render = function (lines, opts) {
     rows = rows - 4
   }
 
-  var out = []
   for (var i = 0, len = lines.length; i < len; i++) {
     add(lines[i])
   }
 
-  var overflow = lines.length > rows ? lines.length - rows : 0
+  // var overflow = lines.length > rows ? lines.length - rows : 0
   var start, end
   if (opts.reverse) {
     start = lines.length - opts.scrollback - rows
-    end   = lines.length - opts.scrollback
+    end = lines.length - opts.scrollback
     if (start < 0) start = 0
-  }
-  else {
+  } else {
     start = opts.scrollback
-    end   = opts.scrollback + rows
+    end = opts.scrollback + rows
   }
 
   out = out.slice(start, end)
@@ -76,8 +74,7 @@ Box.prototype.render = function (lines, opts) {
     if (typeof line === 'object') {
       try {
         line = JSON.stringify(line)
-      }
-      catch (e) {
+      } catch (e) {
         line = '[Object object]'
       }
     }
@@ -91,11 +88,11 @@ Box.prototype.render = function (lines, opts) {
     addLine(line, cols, opts)
   }
 
-  function formatLine(line) {
+  function formatLine (line) {
     if (strlenAnsi(line) < cols) {
       line = line + ' '.repeat(cols - line.length)
     }
-    if (opts.color)  line = chalk[opts.color](line)
+    if (opts.color) line = chalk[opts.color](line)
     if (opts.border) line = chalk.grey('| ') + line + chalk.grey(' |')
     return line
   }
@@ -110,85 +107,7 @@ Box.prototype.render = function (lines, opts) {
   }
 }
 
-
-
-
-// Length of 'str' sans ANSI codes
-function strlenAnsi (str) {
-  var len = 0
-  var insideCode = false
-
-  for (var i=0; i < str.length; i++) {
-    var chr = str.charAt(i)
-    if (chr === '\033') insideCode = true
-    if (!insideCode) len++
-    if (chr === 'm' && insideCode) insideCode = false
-  }
-
-  return len
-}
-
-// Like String#slice, but taking ANSI codes into account
-function sliceAnsi (str, from, to) {
-  var len = 0
-  var insideCode = false
-  var res = ''
-  to = (to === undefined) ? str.length : to
-
-  for (var i=0; i < str.length; i++) {
-    var chr = str.charAt(i)
-    if (chr === '\033') insideCode = true
-    if (!insideCode) len++
-    if (chr === 'm' && insideCode) insideCode = false
-
-    if (len > from && len <= to) {
-      res += chr
-    }
-  }
-
-  return res
-}
-
-// Character-wrap text containing ANSI escape codes.
-// String, Int -> [String]
-function wrapAnsi (text, width) {
-  if (!text) return []
-
-  var res = []
-
-  var line = []
-  var lineLen = 0
-  var insideCode = false
-  for (var i=0; i < text.length; i++) {
-    var chr = text.charAt(i)
-    if (chr === '\033') {
-      insideCode = true
-    }
-
-    line.push(chr)
-
-    if (!insideCode) {
-      lineLen++
-      if (lineLen >= width - 1) {
-        res.push(line.join(''))
-        line = []
-        lineLen = 0
-      }
-    }
-
-    if (chr === 'm' && insideCode) {
-      insideCode = false
-    }
-  }
-
-  if (line.length > 0) {
-    res.push(line.join(''))
-  }
-
-  return res
-}
-
-function formatLines(lines, opts) {
+function formatLines (lines, opts) {
   opts = opts || {}
   var out = []
   opts.cols = opts.cols || process.stdout.columns
@@ -215,12 +134,11 @@ function formatLines(lines, opts) {
 
   return out
 
-  function add(line) {
+  function add (line) {
     if (typeof line === 'object') {
       try {
         line = JSON.stringify(line)
-      }
-      catch (e) {
+      } catch (e) {
         line = '[Object object]'
       }
     }
@@ -241,7 +159,7 @@ function formatLines(lines, opts) {
     out.push(line)
   }
 
-  function formatLine(line, cols, opts) {
+  function formatLine (line, cols, opts) {
     if (line.length < cols) line = line + ' '.repeat(cols - line.length)
     if (opts.color) line = chalk[opts.color](line)
     if (opts.border) {
@@ -249,7 +167,6 @@ function formatLines(lines, opts) {
     }
     return line
   }
-
 }
 
 // Length of 'str' sans ANSI codes
@@ -257,9 +174,9 @@ function strlenAnsi (str) {
   var len = 0
   var insideCode = false
 
-  for (var i=0; i < str.length; i++) {
+  for (var i = 0; i < str.length; i++) {
     var chr = str.charAt(i)
-    if (chr === '\033') insideCode = true
+    if (chr === 0o33) insideCode = true
     if (!insideCode) len++
     if (chr === 'm' && insideCode) insideCode = false
   }
@@ -274,9 +191,9 @@ function sliceAnsi (str, from, to) {
   var res = ''
   to = (to === undefined) ? str.length : to
 
-  for (var i=0; i < str.length; i++) {
+  for (var i = 0; i < str.length; i++) {
     var chr = str.charAt(i)
-    if (chr === '\033') insideCode = true
+    if (chr === 0o33) insideCode = true
     if (!insideCode) len++
     if (chr === 'm' && insideCode) insideCode = false
 
@@ -287,3 +204,42 @@ function sliceAnsi (str, from, to) {
 
   return res
 }
+
+// Character-wrap text containing ANSI escape codes.
+// String, Int -> [String]
+// function wrapAnsi (text, width) {
+//   if (!text) return []
+
+//   var res = []
+
+//   var line = []
+//   var lineLen = 0
+//   var insideCode = false
+//   for (var i = 0; i < text.length; i++) {
+//     var chr = text.charAt(i)
+//     if (chr === 0o33) {
+//       insideCode = true
+//     }
+
+//     line.push(chr)
+
+//     if (!insideCode) {
+//       lineLen++
+//       if (lineLen >= width - 1) {
+//         res.push(line.join(''))
+//         line = []
+//         lineLen = 0
+//       }
+//     }
+
+//     if (chr === 'm' && insideCode) {
+//       insideCode = false
+//     }
+//   }
+
+//   if (line.length > 0) {
+//     res.push(line.join(''))
+//   }
+
+//   return res
+// }
