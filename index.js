@@ -1,16 +1,27 @@
-var fs = require('fs')
 var neatLog = require('neat-log')
 var chalk = require('chalk')
 var blit = require('txt-blit')
 var hg = require('hyper-graph-db')
 var C = require('./src/cli-utils.js')
 var Tree = require('./src/tree.js')
+var path = require('path');
 
-function HrDebug () {
+function HrDebug (dbs, query) {
+  if (!Array.isArray(dbs)) return HrDebug([dbs], query)
   var self = this
+
+  this.dbs = dbs.map((db) => typeof db === 'object' ? db : {name: path.parse(db).base, path: db})
+  console.log(this.dbs)
+  this.query = query
+
+  // Init neat
   this.neat = neatLog(view, {fullscreen: true})
   this.neat.use(init)
 
+  // Init widgets (todo)
+  var bLog = new C.Box(this.neat)
+
+  // Init input
   this.neat.input.on('down', () => {
     if (self.state.mode === 'select') {
       self.state.selected = self.state.selected + 1
@@ -31,7 +42,6 @@ function HrDebug () {
 
   this.neat.input.on('enter', () => {
     if (self.state.mode === 'select') {
-      self.state.mode = 'browse'
       browse(self.state.selection[self.state.selected])
     } else if (self.state.mode === 'browse') {
       self.state.tree.enter()
@@ -50,22 +60,25 @@ function HrDebug () {
   })
 
   function init (state, bus) {
+    self.bus = bus
     self.state = Object.assign(state, {
       mode: 'select',
       selected: 0,
       scroll: 0,
       log: [],
-      showLog: false
+      showLog: false,
+      selection: self.dbs.map((obj) => obj.name)
     })
-    self.bus = bus
-    var path = require('os').homedir() + '/hyper-readings'
-    self.state.dirs = self.state.selection = fs.readdirSync(path)
+
+    if (self.state.selection.length === 1) {
+      browse(self.state.selection[self.state.selected])
+    }
     bus.emit('render')
   }
 
   function view (state) {
     var lines = []
-    lines.push('HyperReadings CLI Browser')
+    lines.push('HyperGraph CLI Browser')
     lines.push('')
 
     if (state.mode === 'select') {
@@ -90,31 +103,21 @@ function HrDebug () {
     blit(screen, mainBox, 0, 0)
 
     if (state.showLog) {
-      var box = C.formatLines(state.log, {
-        rows: size[1] - 10,
-        cols: size[0] - 10,
-        border: true,
-        color: 'yellow'
-      })
+      var box = bLog.render(state.log, {cols: size[0] - 10, rows: size[1] - 10, border: true})
       blit(screen, box, 5, 5)
     }
 
     return screen.join('\n')
   }
 
-  function log (line) {
-    self.state.log.push(line)
-    self.bus.emit('render')
-  }
-
   function browse (name) {
-    var path = require('os').homedir() + '/hyper-readings/' + name
+    self.state.mode = 'browse'
+    var path = self.dbs.filter((obj) => obj.name === name)[0].path
     if (self.path !== path) {
       self.path = path
       self.graph = hg(path, {valueEncoding: 'utf-8'})
       self.graph.on('ready', () => {
-        // self.state.tree = new TripleTree(self.graph, self.bus, log)
-        self.state.tree = new Tree(self.graph, self.bus, log)
+        self.state.tree = new Tree(self.graph, self.query)
         self.state.tree.on('log', (msg) => {
           log(msg)
         })
@@ -122,7 +125,12 @@ function HrDebug () {
       })
     }
   }
+
+  function log (line) {
+    self.state.log.push(line)
+    self.bus.emit('render')
+  }
+
 }
 
 module.exports = HrDebug
-HrDebug()

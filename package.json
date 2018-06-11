@@ -1,15 +1,18 @@
 {
-  "name": "hypergraph-cli",
-  "version": "1.0.0",
+  "name": "hyper-graph-cli",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Frando/hyper-graph-cli.git"
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "hyper-graph-db": "^0.3.4",
     "hyperdb": "^3.1.2",
     "minimist": "^1.2.0",
     "neat-log": "^2.4.0",
-    "perf_hooks": "0.0.1",
     "txt-blit": "^1.0.0"
   },
   "devDependencies": {
@@ -17,8 +20,10 @@
     "tape": "^4.9.1"
   },
   "scripts": {
+    "start": "node cli.js",
+    "hyperreadings": "node hyperreadings.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Franz Heinzmann",
+  "license": "MIT"
 }
